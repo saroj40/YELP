@@ -1,4 +1,5 @@
-const db = require("../db");
+// const db = require("../db");
+import db from '../db/index.js'
 class restaurantsController {
 
   async getAllRestaurants(req, res) {
@@ -46,8 +47,8 @@ class restaurantsController {
         
         const results = await db.query("INSERT INTO restaurants (name,location,price_range)VALUES($1,$2,$3)returning *"
         ,[req.body.name,req.body.location,req.body.price_range]) ;
-        res.status(202).json({
-            status:202,
+        res.status(201).json({
+            status:201,
             success:true,
             results:results.rowCount,
             message:"successfully created !!",
@@ -83,7 +84,7 @@ class restaurantsController {
         });
     }
   }
-  
+
   async deleteRestaurants(req,res){
     try {
         const results = await db.query("DELETE FROM restaurants where id = $1",[req.params.id]);  
@@ -104,5 +105,5 @@ class restaurantsController {
       }
   }
 }
-
-module.exports = restaurantsController;
+export default new restaurantsController();
+// module.exports = restaurantsController;

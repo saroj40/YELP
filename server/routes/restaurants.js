@@ -1,16 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const restaurantsController = require('../controllers/restaurantsController');
-const restaurants = new restaurantsController();
+import express from 'express';
+const RestaurantsRoute = express.Router();
+import restaurantsController from '../controllers/restaurantsController.js';
 
-        router.route('/')
-        .get(restaurants.getAllRestaurants)
-        .post(restaurants.createNewRestaurants);
+        RestaurantsRoute.route('/')
+        .get(restaurantsController.getAllRestaurants)
+        .post(restaurantsController.createNewRestaurants);
 
-        router.route('/:id')
-        .get( restaurants.getRestaurantById)
-        .put(restaurants.updateRestaurants)
-        .delete( restaurants.deleteRestaurants);
+        RestaurantsRoute.route('/:id')
+        .get( restaurantsController.getRestaurantById)
+        .put(restaurantsController.updateRestaurants)
+        .delete( restaurantsController.deleteRestaurants);
 
-module.exports = router;
-
+export default RestaurantsRoute;

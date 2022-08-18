@@ -3,22 +3,23 @@
 // Actually it is starting up and listening up to the port that defined
 
 // dotnev is import at top as it has to start before other thing start
-require("dotenv").config();
-// middleware morgan 
-const morgan = require("morgan");
+import 'dotenv/config';
+
 //importing express
-const express = require("express");
+import express from 'express';
 
 // creating the instance of express app
 const app = express();
-const db =  require('./db');
 
+// middleware morgan 
+import morgan from 'morgan';
+import RestaurantsRoute from './routes/restaurants.js';
 // express middleware
 app.use(morgan("dev"))
 app.use(express.json());
 
 // Routes Setup
-app.use('/api/v1/restaurants',require('./routes/restaurants'));
+app.use('/api/v1/restaurants',RestaurantsRoute);
 
 const port = process.env.PORT || 4001;
 
