@@ -4,25 +4,24 @@
 
 // dotnev is import at top as it has to start before other thing start
 import 'dotenv/config';
-
-//importing express
 import express from 'express';
-
-// creating the instance of express app
-const app = express();
-
-// middleware morgan 
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import RestaurantsRoute from './routes/restaurants.js';
+
+
+const app = express();
 // express middleware
-app.use(morgan("dev"))
+// app.use(morgan("dev"))
+app.use(bodyParser.json());
 app.use(express.json());
 
 // Routes Setup
 app.use('/api/v1/restaurants',RestaurantsRoute);
 
-const port = process.env.PORT || 4001;
 
+
+const port = process.env.PORT || 4001;
 //Application should listen to the following port
 // app.listen(port,callback)
 app.listen(port, () => {

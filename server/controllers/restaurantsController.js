@@ -1,109 +1,36 @@
-// const db = require("../db");
-import db from '../db/index.js'
+import db from "../db/index.js";
+import Request from "../helper/request.js";
+import { error, getAll } from "../helper/response.js";
+import restaurantsServices from "../services/restaurantsServices.js";
 class restaurantsController {
-
   async getAllRestaurants(req, res) {
-    try {
-      const results = await db.query("SELECT * FROM restaurants");
-      res.status(200).json({
-        status: 200,
-        results: results.rowCount,
-        success: true,
-        message: "successfully featched !!",
-        data: results.rows,
-      });
-    } catch (err) {
-      console.error(err.message);
-      res.status(406).json({
-        status: 406,
-        success: true,
-        error: err.message,
-      });
-    }
+    const request = Request(req);
+    restaurantsServices.getAllRestaurants().then((data) => res.json(data));
   }
 
   async getRestaurantById(req, res) {
-    try {
-        const results = await db.query("SELECT * FROM restaurants WHERE id = $1",[req.params.id]);
-        res.status(200).json({
-            status:200,
-            success:true,
-            results:results.rowCount,
-            message:"successfully featched !!",
-            data:results.rows[0],
-        });
-    } catch (err) {
-        console.error(err.message);
-        res.status(406).json({
-            status:406,
-            success:true,
-            error:err.message
-        });
-    }
+    const request = Request(req);
+    restaurantsServices
+      .getRestaurantsById(request.params)
+      .then((data) => res.json(data));
   }
 
-  async createNewRestaurants(req, res){
-    try {
-        
-        const results = await db.query("INSERT INTO restaurants (name,location,price_range)VALUES($1,$2,$3)returning *"
-        ,[req.body.name,req.body.location,req.body.price_range]) ;
-        res.status(201).json({
-            status:201,
-            success:true,
-            results:results.rowCount,
-            message:"successfully created !!",
-            data:results.rows[0],
-        });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({
-            status:500,
-            success:true,
-            error:err.message
-        });
-    }
+  async createNewRestaurants(req, res) {
+    const request = Request(req);
+    restaurantsServices.created(request).then((data) => res.json(data));
   }
-  async updateRestaurants(req,res){
-    try {
-        const results = await db.query("UPDATE restaurants SET name = $1,location=$2,price_range=$3 WHERE id = $4 RETURNING *" ,
-        [req.body.name,req.body.location,req.body.price_range,req.params.id]);
-        res.status(202).json({
-            status:202,
-            success:true,
-            results:results.rowCount,
-            message:"successfully Updated !!",
-            data:results.rows[0],
-        });
-
-    } catch (err) {
-        console.error(err.message);
-        res.status(406).json({
-            status:406,
-            success:true,
-            error:err.message
-        });
-    }
+  async updateRestaurants(req, res) {
+    const request = Request(req);
+    restaurantsServices
+      .updateRestaurants(request)
+      .then((data) => res.json(data));
   }
 
-  async deleteRestaurants(req,res){
-    try {
-        const results = await db.query("DELETE FROM restaurants where id = $1",[req.params.id]);  
-        res.status(204).json({
-          status:204,
-          results:results.rowCount,
-          success:true,
-          message:"successfully Deleted !!",
-          data:results.rows,
-        })
-      } catch (err) {
-          console.error(err.message);
-           res.status(406).json({
-              status:406,
-              success:true,
-              error:err.message,
-          });
-      }
+  async deleteRestaurants(req, res) {
+    const request = Request(req);
+    restaurantsServices
+      .deleteRestaurants(request.params)
+      .then((data) => res.json(data));
   }
 }
 export default new restaurantsController();
-// module.exports = restaurantsController;
